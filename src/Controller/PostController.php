@@ -19,19 +19,37 @@ class PostController extends AbstractController
         $posts = $postRepository->findAll();
 
         return $this->render('post/index.html.twig', [
-            'controller_name' => 'PostController',
             'posts' => $posts
         ]);
     }
 
     #[Route('/create', name: 'create')]
-    public function create(Request $req, EntityManagerInterface $entityManager): Response {
+    public function create(Request $req, EntityManagerInterface $em): Response {
         $post = new Post();
         $post->setTitle('This is a title');
 
-        $entityManager->persist($post);
-        $entityManager->flush();
+        $em->persist($post);
+        $em->flush();
 
-        return new Response(content: 'Post was created');
+        return $this->redirect($this->generateUrl('post.index'));
+    }
+
+    #[Route(path: '/show/{id}', name: 'show')]
+    public function show($id, Post $post): Response
+    {
+        return $this->render('post/show.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    #[Route(path: '/delete/{id}', name: 'delete')]
+    public function remove($id, Post $post, EntityManagerInterface $em): Response
+    {
+        $em->remove($post);
+        $em->flush();
+
+        $this->addFlash(type: 'success', message: 'Post was deleted');
+
+        return $this->redirect($this->generateUrl('post.index'));
     }
 }
