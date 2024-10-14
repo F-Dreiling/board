@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\PostType;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,22 @@ class PostController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(Request $req, EntityManagerInterface $em): Response {
         $post = new Post();
-        $post->setTitle('This is a title');
+        //$post->setTitle('This is a title');
+        $form = $this->createForm(type: PostType::class, data: $post);
 
-        $em->persist($post);
-        $em->flush();
+        $form->handleRequest($req);
+        //$form->getErrors();
 
-        return $this->redirect($this->generateUrl('post.index'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($post);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('post.index'));
+        }
+
+        return $this->render('post/create.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route(path: '/show/{id}', name: 'show')]
