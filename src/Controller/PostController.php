@@ -60,8 +60,10 @@ class PostController extends AbstractController
     }
 
     #[Route(path: '/show/{id}', name: 'show')]
-    public function show($id, Post $post): Response
+    public function show(Post $post): Response
     {
+        //$post = $postRepository->findPostWithCategory($id);
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'uploads' => '/board/public/uploads/'
@@ -69,7 +71,7 @@ class PostController extends AbstractController
     }
 
     #[Route(path: '/delete/{id}', name: 'delete')]
-    public function remove($id, Post $post, EntityManagerInterface $em): Response
+    public function remove(Post $post, EntityManagerInterface $em): Response
     {
         $em->remove($post);
         $em->flush();
