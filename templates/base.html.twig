@@ -25,7 +25,11 @@
                   </li>
                   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                   <li class="nav-item float-right">
-                    <a class="nav-link" href="{{ path('logout', {name: 'Felix'}) }}">Logout</a>
+                    <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item float-right">
+                    <a class="nav-link" href="{{ path('login') }}">Login</a>
                   </li>
                   {% endif %}
                 </ul>
