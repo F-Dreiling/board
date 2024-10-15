@@ -34,6 +34,20 @@ class PostController extends AbstractController
         //$form->getErrors();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $req->files->get(key: 'post')['attachment'];
+
+            if($file) {
+                $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
+
+                $file->move(
+                    $this->getParameter(name: 'uploads_dir'),
+                    $filename
+                );
+
+                $post->setImage($filename);
+            }
+
             $em->persist($post);
             $em->flush();
 
