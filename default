@@ -1,0 +1,4 @@
+server {
+    server_name dreiling.dev;
+    root /home/site/wwwroot/public;
+}
