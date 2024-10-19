@@ -1,4 +1,5 @@
 server {
-    server_name dreiling.dev;
-    root /home/site/wwwroot/public;
+    location / {
+        rewrite ^(.*)$ /public/$1 break;
+    }
 }
