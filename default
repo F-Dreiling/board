@@ -1,5 +1,6 @@
 server {
     location / {
-        rewrite ^(.*)$ /public/$1 break;
+        # try to serve file directly, fallback to index.php
+        try_files $uri /public/index.php$is_args$args;
     }
 }
