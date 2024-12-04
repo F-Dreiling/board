@@ -50,6 +50,9 @@ class PostController extends AbstractController
             $em->persist($post);
             $em->flush();
 
+            // send a flash success message
+            $this->addFlash(type: 'success', message: 'Post was created');
+
             return $this->redirect($this->generateUrl('post.index'));
         }
 
@@ -61,6 +64,7 @@ class PostController extends AbstractController
     #[Route(path: '/show/{id}', name: 'show')]
     public function show(Post $post): Response
     {
+        // for this also pass in id and repository as function parameter, but no need as Post is injected and the post will be found by id
         //$post = $postRepository->findPostWithCategory($id);
 
         return $this->render('post/show.html.twig', [
@@ -75,6 +79,7 @@ class PostController extends AbstractController
         $em->remove($post);
         $em->flush();
 
+        // send a flash success message
         $this->addFlash(type: 'success', message: 'Post was deleted');
 
         return $this->redirect($this->generateUrl('post.index'));
