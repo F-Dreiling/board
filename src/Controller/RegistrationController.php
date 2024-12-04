@@ -18,7 +18,7 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'register')]
     public function register(Request $req, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
-        // DON'T do this for REAL
+        // there are better ways to do this later
         $form = $this->createFormBuilder()
             ->add(child: 'username')
             ->add(child: 'password', type: RepeatedType::class, options: [
